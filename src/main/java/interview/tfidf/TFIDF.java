@@ -58,7 +58,7 @@ public class TFIDF {
             frequency = frequencyMap.get(word);
         }
 
-        return Math.log10(((double) sizeOfCorpus) / frequency);
+        return Math.log10(((double) sizeOfCorpus) / (1 + frequency));
     }
 
     public double tf(String word, Document document) {
@@ -80,11 +80,14 @@ public class TFIDF {
 
     private Map<String, Integer> histogram(Collection<String> words) {
         Map<String, Integer> histogram = new HashMap<String, Integer>();
-        Set<String> uniqueSet = new HashSet<String>(words);
-        for (String word : uniqueSet) {
-            histogram.put(word, Collections.frequency(words, word));
-        }
+        for (String word : words) {
+            int count = 0;
+            if (histogram.containsKey(word)) {
+                count = histogram.get(word);
+            }
 
+            histogram.put(word, count + 1);
+        }
 
         return histogram;
     }

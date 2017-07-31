@@ -1,5 +1,6 @@
 package interview.fetcher;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,7 +14,11 @@ import java.net.URLConnection;
 
 public class HttpFetcher implements IDescriptionFetcher {
     private static final String DESCRIPTION_TAG = "description";
+    private static final String RESULTS_TAG = "results";
 
+    HttpFetcher(String url) {
+        
+    }
     public String fetch(String urlAddress) {
         try {
             URL url = new URL(urlAddress);
@@ -24,7 +29,7 @@ public class HttpFetcher implements IDescriptionFetcher {
             StringBuffer stringBuffer = new StringBuffer();
             String inputLine = in.readLine();
             while (inputLine != null) {
-                stringBuffer.append(stringBuffer);
+                stringBuffer.append(inputLine);
                 inputLine = in.readLine();
             }
 
@@ -46,9 +51,9 @@ public class HttpFetcher implements IDescriptionFetcher {
     private String getDescription(String json) {
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(json);
-            JSONObject jsonObject = (JSONObject) obj;
-            String description = (String) jsonObject.get(DESCRIPTION_TAG);
+            JSONObject root = (JSONObject) parser.parse(json);
+            JSONObject object = (JSONObject) ((JSONArray) root.get(RESULTS_TAG)).get(0);
+            String description = (String) object.get(DESCRIPTION_TAG);
 
             return description;
         } catch (ParseException e) {
