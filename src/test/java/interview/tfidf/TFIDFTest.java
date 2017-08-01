@@ -9,14 +9,8 @@ import java.util.*;
 
 public class TFIDFTest {
 
-    private static TFIDF tfidf;
-    private static List<Document> documents;
-
-    @BeforeClass
-    public static void before() {
-        documents = createDocumentList();
-        tfidf = new TFIDF(documents);
-    }
+    private List<Document> documents = createDocumentList();
+    private TFIDF tfidf = new TFIDF(documents);
 
     private static List<Document> createDocumentList() {
         Document document1 = new Document("1", "this is a a sample");
