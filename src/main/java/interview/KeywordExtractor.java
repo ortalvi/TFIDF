@@ -15,26 +15,24 @@ public class KeywordExtractor {
     public Map<String, Double> extractKeywords(final Document document, int top) {
         Set<String> uniqueWords = new HashSet<>(document.getWords());
         Map<String, Double> scores = new HashMap<>(uniqueWords.size());
-        Map<String, Double> keywords = new HashMap<>(top);
+
         for (String word : uniqueWords) {
             scores.put(word, tfidf.tfidf(word, document));
         }
 
         TreeMap<String, Double> sortedScoresMap = new TreeMap(new ValueComparator(scores));
         sortedScoresMap.putAll(scores);
-        TreeMap<String, Double> topSortedScoresMap = new TreeMap(new ValueComparator(scores));
 
-        int count = 0;
-        while (count < top) {
+        TreeMap<String, Double> topSortedScoresMap = new TreeMap(new ValueComparator(scores));
+        while (topSortedScoresMap.size() < top) {
             Map.Entry<String, Double> entry = sortedScoresMap.pollFirstEntry();
             topSortedScoresMap.put(entry.getKey(), entry.getValue());
-            count++;
         }
-        
+
         return topSortedScoresMap;
     }
 
-    class ValueComparator implements Comparator<String> {
+    private static class ValueComparator implements Comparator<String> {
         Map<String, Double> map;
 
         public ValueComparator(Map<String, Double> map) {
