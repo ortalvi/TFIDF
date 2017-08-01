@@ -19,16 +19,31 @@ public class KeywordExtractor {
         for (String word : uniqueWords) {
             scores.put(word, tfidf.tfidf(word, document));
         }
-        List<Map.Entry<String, Double>> entries = new ArrayList<>(scores.entrySet());
-        Collections.sort(entries, new Comparator<Map.Entry<String, Double>>() {
-            @Override
-            public int compare(Map.Entry<String, Double> e1, Map.Entry<String, Double> e2) {
-                return Double.compare(e1.getValue(), e2.getValue());
-            }
-        });
-        for (Map.Entry<String, Double> entry : entries.subList(0, top)) {
-            keywords.put(entry.getKey(), entry.getValue());
+
+        TreeMap<String, Double> sortedScoresMap = new TreeMap(new ValueComparator(scores));
+        sortedScoresMap.putAll(scores);
+        TreeMap<String, Double> topSortedScoresMap = new TreeMap(new ValueComparator(scores));
+
+        int count = 0;
+        while (count < top) {
+            Map.Entry<String, Double> entry = sortedScoresMap.pollFirstEntry();
+            topSortedScoresMap.put(entry.getKey(), entry.getValue());
+            count++;
         }
-        return keywords;
+        
+        return topSortedScoresMap;
+    }
+
+    class ValueComparator implements Comparator<String> {
+        Map<String, Double> map;
+
+        public ValueComparator(Map<String, Double> map) {
+            this.map = map;
+        }
+
+        @Override
+        public int compare(String s1, String s2) {
+            return -1 * Double.compare(map.get(s1), map.get(s2));
+        }
     }
 }

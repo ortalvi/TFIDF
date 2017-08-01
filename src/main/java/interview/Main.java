@@ -26,10 +26,10 @@ public class Main {
         printResult(keywordsPerApp);
     }
 
-    private static void printResult(Map<String, Map<String, Double>> topTFIDFWordsMap) {
+    private static void printResult(Map<String, Map<String, Double>> keywordsPerApp) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (Map.Entry<String, Map<String, Double>> entry : topTFIDFWordsMap.entrySet()) {
+        for (Map.Entry<String, Map<String, Double>> entry : keywordsPerApp.entrySet()) {
             stringBuilder.append(entry.getKey() + ": ");
             for (Map.Entry<String, Double> value : entry.getValue().entrySet()) {
                 stringBuilder.append(value.getKey() + " " + value.getValue() + ", ");
