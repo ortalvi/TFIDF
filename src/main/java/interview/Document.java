@@ -9,7 +9,7 @@ public class Document {
 
     public Document(String id, String description) {
         this.id = id;
-        String[] words = description.split(" ");
+        String[] words = description.split("\\W+");
         this.words = Arrays.asList(words);
     }
 

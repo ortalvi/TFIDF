@@ -15,13 +15,15 @@ import java.net.URLConnection;
 public class HttpFetcher implements IDescriptionFetcher {
     private static final String DESCRIPTION_TAG = "description";
     private static final String RESULTS_TAG = "results";
+    private String urlAddress;
 
-    HttpFetcher(String url) {
-        
+    public HttpFetcher(String url) {
+        this.urlAddress = url;
     }
-    public String fetch(String urlAddress) {
+
+    public String fetch(String id) {
         try {
-            URL url = new URL(urlAddress);
+            URL url = new URL(urlAddress + id);
             URLConnection yc = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     yc.getInputStream()));

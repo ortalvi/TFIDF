@@ -21,7 +21,7 @@ public class TFIDF {
      * @return a map between every Document to the number of times word w appears in that document
      */
     private Map<Document, Map<String, Integer>> getHistogramsMap(Collection<Document> corpus) {
-        Map<Document, Map<String, Integer>> histogramsMap = new HashMap<Document, Map<String, Integer>>();
+        Map<Document, Map<String, Integer>> histogramsMap = new HashMap<>();
 
         for (Document document : corpus) {
             Map<String, Integer> histogram = histogram(document.getWords());
@@ -37,7 +37,7 @@ public class TFIDF {
      * documents with word w in it
      */
     private Map<String, Integer> getFrequencyMap(Map<Document, Map<String, Integer>> histograms) {
-        Map<String, Integer> frequencyMap = new HashMap<String, Integer>();
+        Map<String, Integer> frequencyMap = new HashMap<>();
 
         for (Map<String, Integer> histogram : histograms.values()) {
             for (String word : histogram.keySet()) {
@@ -52,7 +52,7 @@ public class TFIDF {
         return frequencyMap;
     }
 
-    public double idf(String word) {
+    double idf(String word) {
         int frequency = 0;
         if (frequencyMap.containsKey(word)) {
             frequency = frequencyMap.get(word);
@@ -61,10 +61,10 @@ public class TFIDF {
         return Math.log10(((double) sizeOfCorpus) / (1 + frequency));
     }
 
-    public double tf(String word, Document document) {
+    double tf(String word, Document document) {
         int frequency = 0;
-        if (histogramMap.containsKey(document.getId())) {
-            Map<String, Integer> histogram = histogramMap.get(document.getId());
+        if (histogramMap.containsKey(document)) {
+            Map<String, Integer> histogram = histogramMap.get(document);
 
             if (histogram.containsKey(word)) {
                 frequency = histogram.get(word);
@@ -79,7 +79,7 @@ public class TFIDF {
     }
 
     private Map<String, Integer> histogram(Collection<String> words) {
-        Map<String, Integer> histogram = new HashMap<String, Integer>();
+        Map<String, Integer> histogram = new HashMap<>();
         for (String word : words) {
             int count = 0;
             if (histogram.containsKey(word)) {
